@@ -1,9 +1,0 @@
-POST http://127.0.0.1:9000/movies
-Accept: */*
-Cache-Control: no-cache
-Content-Type: application/json
-
-["Matrix"]
-
-###
-
