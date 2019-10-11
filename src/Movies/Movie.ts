@@ -10,3 +10,7 @@ export interface Movie {
   language: string,
   country: string,
 }
+
+export interface PersistedMovie extends Movie {
+  id: number
+}

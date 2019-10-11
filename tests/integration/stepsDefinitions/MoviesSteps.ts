@@ -1,4 +1,4 @@
-import { after, binding, given, then, when, before } from 'cucumber-tsflow';
+import { after, binding, then, when, before } from 'cucumber-tsflow';
 import { Container } from '../../../src/Service/Container';
 import * as supertest from 'supertest';
 import * as chai from 'chai';
@@ -58,7 +58,23 @@ export class MoviesSteps {
                 for (const element of response.body) {
                   chai
                     .expect(element)
-                    .to.match(/\/movie\/(\d)+/);
+                    .to.match(/\/movies\/(\d)+/);
+                }
+              });
+  }
+
+  @then('I should receive comment identifier')
+  public async assertCommentIdentifiers(): Promise<void> {
+    await this.lastRequest
+              .expect(200)
+              .then(response => {
+                if (response.body.length !== 1) {
+                  throw new Error('No comment identifier found!');
+                }
+                for (const element of response.body) {
+                  chai
+                    .expect(element)
+                    .to.match(/\/comments\/(\d)+/);
                 }
               });
   }
@@ -70,9 +86,46 @@ export class MoviesSteps {
               .then(response => {
                 const expectedKeys = ['title', 'year', 'released', 'genre', 'actors', 'plot', 'language', 'country', 'id'];
                 chai
-                  .expect(Object.keys(response.body), "Missing property in movie object!")
+                  .expect(Object.keys(response.body), 'Missing property in movie object!')
                   .to.deep.equal(expectedKeys);
               });
   }
 
+  @then('Comment object should be returned')
+  public async assertCommentObject(): Promise<void> {
+    await this.lastRequest
+              .expect(200)
+              .then(response => {
+                const expectedKeys = ['movie', 'content', 'id'];
+                chai
+                  .expect(Object.keys(response.body), 'Missing property in movie object!')
+                  .to.deep.equal(expectedKeys);
+              });
+  }
+
+  @then('Object with id {int} should not be found')
+  public async assertNotFound(id: number): Promise<void> {
+    await this.lastRequest
+        .expect(404)
+        .then(response => {
+          chai.expect(response.body.message).to.be.equal(`Movie with id ${id} not found!`);
+        });
+  }
+
+  @then('Comments list with {int} elements should be returned')
+  public async assertCommentsForMovies(expectedAmount: number): Promise<void> {
+    await this.lastRequest
+              .expect(200)
+              .then(response => {
+                if (response.body.length !== expectedAmount) {
+                  throw new Error(`Expected ${expectedAmount} comments, but ${response.body.length} received!`);
+                }
+                for (const element of response.body) {
+                  const expectedKeys = ['movie', 'content', 'id'];
+                  chai
+                    .expect(Object.keys(element))
+                    .to.deep.equal(expectedKeys);
+                }
+              });
+  }
 }

@@ -1,5 +1,5 @@
 import { Movie } from './Movie';
-import { PersistedMovie } from './PersistedMovie';
+import { PersistedMovie } from './Movie';
 
 export interface MoviesRepository {
 

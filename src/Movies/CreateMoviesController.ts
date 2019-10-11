@@ -24,7 +24,7 @@ export class CreateMoviesController implements Controller {
       movies.map(movie => this.moviesRepository.add(movie))
     );
 
-    return persistedMovies.map(movie => '/movie/' + movie.id);
+    return persistedMovies.map(movie => '/movies/' + movie.id);
   }
 
   /**

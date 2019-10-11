@@ -12,8 +12,7 @@ export class ReadMoviesController implements Controller {
 
 
   public async handle(ctx: IRouterContext) {
-    const x =  await this.movieRepository.getAll();
-    return x;
+    return await this.movieRepository.getAll();
   }
 
 }

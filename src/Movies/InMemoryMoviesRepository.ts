@@ -1,40 +1,36 @@
 import { MoviesRepository } from './MoviesRepository';
-import { PersistedMovie } from './PersistedMovie';
+import { PersistedMovie } from './Movie';
 import { Movie } from './Movie';
+import { GenericInMemoryStorage } from '../Storage/GenericInMemoryStorage';
 
-type IndexedMovieStorage = PersistedMovie[];
 
 export class InMemoryMoviesRepository implements MoviesRepository {
 
-  private storage: IndexedMovieStorage = [];
-  private lastId: number = 0;
+  private readonly storage: GenericInMemoryStorage<Movie, PersistedMovie>;
+
+  constructor() {
+    this.storage = new GenericInMemoryStorage<Movie, PersistedMovie>();
+  }
 
   public async add(movie: Movie): Promise<PersistedMovie> {
-    const id = this.lastId++;
-    const storedMovie = {...movie, id: id};
-    this.storage[id] = storedMovie;
-
-    return storedMovie
+    return await this.storage.add(movie, (movie: Movie, id: number) => {return {...movie, id}})
   }
 
   public async get(id: number): Promise<PersistedMovie> {
-    if (!(id in this.storage)) {
-      throw new Error('Movie with id ' + id + ' not found!')
-    }
-    return this.storage[id];
+    return await this.storage.get(id);
+  }
+
+  public async getAll(): Promise<PersistedMovie[]> {
+    return await this.storage.getAll();
   }
 
   /**
    * use generator in case of super large movies repo.
    */
   public async *generateAll (): AsyncGenerator<PersistedMovie> {
-    for(const id of this.storage.keys()) {
+    for(const id of this.storage.getKeys()) {
       yield await this.get(id);
     }
-  }
-
-  public async getAll(): Promise<PersistedMovie[]> {
-    return this.storage;
   }
 
 }
