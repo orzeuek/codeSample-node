@@ -1,0 +1,14 @@
+#%RAML 0.8
+version: v1
+
+/movies:
+  Post:
+    description:
+    body:
+      application/json:
+        example: ["Matrix", "Titanic"]
+    responses:
+      200:
+        body:
+          application/json:
+            example: [{}, {}]
