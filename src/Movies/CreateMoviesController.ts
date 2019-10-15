@@ -28,7 +28,6 @@ export class CreateMoviesController implements Controller {
   }
 
   /**
-   *
    * @param request
    */
   private validateRequest(request: CreateMoviesRequest): void {
