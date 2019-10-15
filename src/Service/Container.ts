@@ -9,7 +9,6 @@ import { OmdbProxy } from '../Movies/OmdbProxy';
 import { InMemoryMoviesRepository } from '../Movies/InMemoryMoviesRepository';
 import * as request from 'request-promise-native';
 import { ReadMoviesController } from '../Movies/ReadMoviesController';
-import { publicDecrypt } from 'crypto';
 import { CreateCommentController } from '../Comments/CreateCommentController';
 import { CommentsRepository } from '../Comments/CommentsRepository';
 import { InMemoryCommentsRepository } from '../Comments/InMemoryCommentsRepository';

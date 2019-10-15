@@ -1,6 +1,4 @@
 import * as chai from 'chai';
-import * as chaiAsPromised from 'chai-as-promised';
-import { InMemoryMoviesRepository } from '../../../src/Movies/InMemoryMoviesRepository';
 import { OmdbProxy } from '../../../src/Movies/OmdbProxy';
 
 describe('Proxy for OMDB API', () => {
